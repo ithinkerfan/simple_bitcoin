@@ -3,6 +3,7 @@
 ## blockchain 由四个部分组成，分别为block(区块), chain(链), transaction(交易), node(节点)。
 
   1、 block的结构：
+  
     (a) index : 区块高度；
     (b) timestamp : 时间戳；
     (c) transactions : 区块写入的交易；
