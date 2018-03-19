@@ -170,14 +170,12 @@ class Blockchain:
         """
 
         proof = 0
-        proof_hash = '99999'
-        while (proof_hash[:4] == "00000") is False:
-            proof_hash = self.valid_proof(last_proof, proof)
+        while self.valid_proof(last_proof, proof) is False:
 
             proof += 1
 
 
-        return [proof,proof_hash]
+        return proof
 
     @staticmethod
     def valid_proof(last_proof: int, proof: int) -> bool:
@@ -191,8 +189,7 @@ class Blockchain:
 
         guess = f'{last_proof}{proof}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
-        #return guess_hash[:4] == "0000"
-        return guess_hash
+        return guess_hash[:4] == "0000"
 
 
 # Instantiate the Node
@@ -210,7 +207,7 @@ def mine():
     # We run the proof of work algorithm to get the next proof...
     last_block = blockchain.last_block
     last_proof = last_block['proof']
-    proof,proof_hash = blockchain.proof_of_work(last_proof)
+    proof = blockchain.proof_of_work(last_proof)
 
     # 给工作量证明的节点提供奖励.
     # 发送者为 "0" 表明是新挖出的币
@@ -229,7 +226,6 @@ def mine():
         'transactions': block['transactions'],
         'proof': block['proof'],
         'previous_hash': block['previous_hash'],
-        'hash':proof_hash,
     }
     return jsonify(response), 200
 
